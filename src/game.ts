@@ -5,7 +5,7 @@
 
 export type Board = Row[]
 export type Row = Cell[]
-export type Player = 'x' | 'o'
+export type Player = '👸' | '🤴'
 export type Cell = Player | null
 export type EndState = Player | 'tie' | undefined
 export type CellIndex = [number, number]
@@ -19,7 +19,7 @@ export type Game = {
 export const initialGameState = (): Game => {
     const game: Game = {
         board: [[null, null, null], [null, null, null], [null, null, null]],
-        currentPlayer: 'x'
+        currentPlayer: '👸'
     }
     return game
 }
@@ -32,20 +32,20 @@ const winningStates: CellIndex[][] = [
     [[0, 1], [1, 1], [2, 1]], // center col
     [[0, 2], [1, 2], [2, 2]], // right col
     [[0, 0], [1, 1], [2, 2]], // diag 1
-    [[0, 2], [1, 1], [0, 2]], // diag 2
+    [[2, 2], [1, 1], [0, 2]], // diag 2
 ]
 
 const playerWins = (game: Game, player: Player) => {
     return winningStates.some((winState) => winState.every(([rowIndex, colIndex]) => game.board[rowIndex][colIndex] === player))
 }
 
-const xWins = (game: Game) => playerWins(game, 'x')
-const oWins = (game: Game) => playerWins(game, 'o')
+const xWins = (game: Game) => playerWins(game, '👸')
+const oWins = (game: Game) => playerWins(game, '🤴')
 
 function calculateEndState(game: Game): EndState {
     // x win, o win, or tie
-    if (xWins(game)) return 'x'
-    if (oWins(game)) return 'o'
+    if (xWins(game)) return "👸"
+    if (oWins(game)) return '🤴'
     if (game.board.every((row => row.every(cell => cell !== null)))) return 'tie'
 
 
@@ -59,7 +59,7 @@ export const move = (game: Game, rowIndex: number, colIndex: number): Game => {
     }
     const nextGame = structuredClone(game)
     nextGame.board[rowIndex][colIndex] = game.currentPlayer
-    nextGame.currentPlayer = nextGame.currentPlayer === 'x' ? 'o' : 'x'
+    nextGame.currentPlayer = nextGame.currentPlayer === '👸' ? '🤴' : '👸'
     console.log("move");
     nextGame.endState = calculateEndState(nextGame)
 
