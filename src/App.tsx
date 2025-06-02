@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <p>game goes here</p>
+      <h1 className='font-bold text-4xl'>Jill Jack Joe</h1> 
+      <p className='font-semibold text-sm p-10'>Line up 3 Jacks or 3 Jills. Win a cup of joe.</p>
+      
+      // turn
+      // board
+      //
 
     </>
   )
