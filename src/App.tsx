@@ -48,7 +48,16 @@ function App() {
       <p className='text-2xl m-6'>
         Turn: Player {game.currentPlayer}
       </p>
-      {game.board.map((row, rowIndex) => <Row row={row} rowIndex={rowIndex} handleMove={handleMove} />)}
+      {game.board.map((row, rowIndex) =>
+        <Row
+          row={row}
+          rowIndex={rowIndex}
+          handleMove={handleMove}
+        />)}
+      <div>
+        {game.endState &&
+          <div className='text-3xl p-5'>Result: {game.endState}</div>}
+      </div>
     </>
   )
 }
