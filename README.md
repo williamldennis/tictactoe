@@ -16,13 +16,13 @@ Then, as a bonus, add AI.
 ## Features
 
 A simple version of your game should have the following:
-- [ ] Game Engine
+- [X] Game Engine
       - [X] Separate game logic from React components
       - [X] Track game state (board, current player, etc.)
       - [X] Allow users to calculate moves
       - [X] Handle move validation
       - [X] Detect win/lose/draw conditions
-- [ ] Frontend/React Game Interface
+- [X] Frontend/React Game Interface
       - [X] Display current game state
       - [X] Allow players to make moves by using the game engine
       - [X] Show game status (whose turn, winner, etc.)
