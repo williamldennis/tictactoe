@@ -31,8 +31,8 @@ const winningStates: CellIndex[][] = [
     [[0, 0], [1, 0], [2, 0]], // left col
     [[0, 1], [1, 1], [2, 1]], // center col
     [[0, 2], [1, 2], [2, 2]], // right col
-    [[0, 0], [1, 1], [2, 2]], // diag 1
-    [[2, 2], [1, 1], [0, 2]], // diag 2
+    [[0, 0], [1, 1], [2, 2]], // diag 1 ul -> lr
+    [[2, 0], [1, 1], [0, 2]], // diag 2 ll -> ur
 ]
 
 const playerWins = (game: Game, player: Player) => {
@@ -55,6 +55,10 @@ function calculateEndState(game: Game): EndState {
 export const move = (game: Game, rowIndex: number, colIndex: number): Game => {
     if (game.board[rowIndex][colIndex] != null) {
         console.log('that move is already taken!');
+        return game
+    }
+    if (game.endState) {
+        console.log("game is over");
         return game
     }
     const nextGame = structuredClone(game)

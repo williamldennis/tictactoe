@@ -13,7 +13,7 @@ function Cell({ cell, cellIndex, cellClick, rowIndex }: CellProps) {
   const isLastCol = cellIndex === 2
 
   const borderClass = [
-    'border-5',
+    'border-4',
     !isLastRow && 'border-b',
     !isLastCol && 'border-r',
     'border-black'
@@ -64,31 +64,46 @@ function App() {
   return (
     <>
       <h1 className='font-bold text-4xl'>Jill 👸 Jack 🤴 Joe ☕️</h1>
+      <p className='text-sm m-3'>Line up 3 Jacks or 3 Jills. Win a cup of joe.</p>
+      <div className="flex items-center justify-center">
 
-      <p className='text-sm mt-3'>Line up 3 Jacks or 3 Jills. Win a cup of joe.</p>
-      <p className='text-5xl m-6'>
-        Turn: {game.currentPlayer === '👸' ? '👸 Jill' : '🤴 Jack'}
-      </p>
-      <div className=''>
-        {game.board.map((row, rowIndex) =>
-          <Row
-            row={row}
-            rowIndex={rowIndex}
-            handleMove={handleMove}
-          />)}
-        <div>
+        <div className="mt-4 w-160 h-160 rounded-4xl bg-[url('assets/tic-tac-toe.png')] bg-cover bg-center">
+
+          {!game.endState &&
+            <p className='text-5xl p-5 m-6 bg-white rounded-3xl'>
+              Turn: {game.currentPlayer === '👸' ? '👸 Jill' : '🤴 Jack'}
+            </p>}
           {game.endState &&
-            <>
-              <div className='text-3xl p-5'>{game.endState === '👸' ? '👸 Jill' : '🤴 Jack'} wins a ☕️</div>
-              <button
-                className='bg-black rounded text-white px-10 py-3'
-                onClick={() => handleNewGame()}
-              >
-                NEW GAME
-              </button>
-            </>
-
+            <div className='text-5xl p-5 m-6 bg-white rounded-3xl'>
+              {game.endState === 'tie'
+                ? 'A tie!? Off with your heads! 🪓💀'
+                : game.endState === '👸'
+                  ? '👸 Jill wins a ☕️'
+                  : '🤴 Jack wins a ☕️'}
+            </div>
           }
+          <div className=''>
+            {game.board.map((row, rowIndex) =>
+              <Row
+                row={row}
+                rowIndex={rowIndex}
+                handleMove={handleMove}
+              />)}
+            <div>
+              {game.endState &&
+                <>
+                  <button
+                    className='bg-black rounded text-white px-12 py-3 m-6'
+                    onClick={() => handleNewGame()}
+                  >
+                    NEW GAME
+                  </button>
+                </>
+
+              }
+            </div>
+          </div>
+
         </div>
       </div>
 
