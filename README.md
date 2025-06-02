@@ -17,16 +17,16 @@ Then, as a bonus, add AI.
 
 A simple version of your game should have the following:
 - [ ] Game Engine
-      - [ ] Separate game logic from React components
-      - [ ] Track game state (board, current player, etc.)
-      - [ ] Allow users to calculate moves
-      - [ ] Handle move validation
-      - [ ] Detect win/lose/draw conditions
+      - [X] Separate game logic from React components
+      - [X] Track game state (board, current player, etc.)
+      - [X] Allow users to calculate moves
+      - [X] Handle move validation
+      - [X] Detect win/lose/draw conditions
 - [ ] Frontend/React Game Interface
-      - [ ] Display current game state
-      - [ ] Allow players to make moves by using the game engine
-      - [ ] Show game status (whose turn, winner, etc.)
-      - [ ] Reset/restart game functionality
+      - [X] Display current game state
+      - [X] Allow players to make moves by using the game engine
+      - [X] Show game status (whose turn, winner, etc.)
+      - [X] Reset/restart game functionality
 
 Bonus:
 - [ ] \[Styling\] - Make it look sexy. Add animations for game moves (react-spring, framer, keyframes)
