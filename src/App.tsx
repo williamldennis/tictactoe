@@ -3,6 +3,8 @@ import './App.css'
 import { initialGameState, move, type Cell, type Game, type Row } from './game'
 import { TicTacToeApiClient } from './api'
 import { useMemo } from "react";
+import clsx from 'clsx'
+
 
 
 type CellProps = {
@@ -25,7 +27,7 @@ function Cell({ cell, cellIndex, cellClick, rowIndex }: CellProps) {
   return (
     <div
       key={cellIndex}
-      className={`w-32 h-32 flex items-center justify-center text-3xl opacity-90 ${borderClass} ${cell === '👸' ? "bg-green-700" : ""} ${cell === '🤴' ? "bg-blue-700" : ""}`}
+      className={`w-32 h-32 flex items-center justify-center text-5xl opacity-80 ${borderClass} ${cell === '👸' ? "bg-red-400" : ""} ${cell === '🤴' ? "bg-blue-700" : ""}`}
       onClick={cellClick}
     >
       {cell}
@@ -80,22 +82,37 @@ function App() {
     setGame(newGame)
   }
 
+  const backgroundImageStyle = clsx(
+    "mt-4 w-160 h-160 rounded-4xl  bg-cover bg-center",
+    !game.endState && "bg-[url('assets/tic-tac-toe.png')]",
+    game.endState === '👸' && "bg-[url('assets/jill-wins.gif')]",
+    game.endState === '🤴' && "bg-[url('assets/jack-wins.gif')]",
+    game.endState === 'tie' && "bg-[url('assets/sad-losers-2.gif')]"
+    ///
+  )
+
+  const bannerStyle = clsx(
+    "text-5xl p-5 m-6 rounded-3xl",
+    game.currentPlayer === '👸' && "bg-red-200",
+    game.currentPlayer === '🤴' && "bg-blue-200"
+  )
+
   return (
     <>
-      <h1 className='font-bold text-4xl'>Jill 👸 Jack 🤴 Joe ☕️</h1>
+      <h1 className='font-bold text-4xl bg'>Jill 👸 Jack 🤴 Joe ☕️</h1>
       <p className='text-sm m-3'>Line up 3 Jacks or 3 Jills. Win a cup of joe.</p>
       <div className="flex items-center justify-center">
 
-        <div className="mt-4 w-160 h-160 rounded-4xl bg-[url('assets/tic-tac-toe.png')] bg-cover bg-center">
+        <div className={backgroundImageStyle}>
 
           {!game.endState &&
-            <p className='text-5xl p-5 m-6 bg-white rounded-3xl'>
+            <p className={bannerStyle}>
               Turn: {game.currentPlayer === '👸' ? '👸 Jill' : '🤴 Jack'}
             </p>}
           {game.endState &&
-            <div className='text-5xl p-5 m-6 bg-white rounded-3xl'>
+            <div className='text-4xl p-5 m-6 bg-white rounded-3xl'>
               {game.endState === 'tie'
-                ? 'A tie!? Off with your heads! 🪓💀'
+                ? 'A tie!? You spilled the coffee.'
                 : game.endState === '👸'
                   ? '👸 Jill wins a ☕️'
                   : '🤴 Jack wins a ☕️'}
