@@ -25,7 +25,7 @@ function Cell({ cell, cellIndex, cellClick, rowIndex }: CellProps) {
   return (
     <div
       key={cellIndex}
-      className={`w-32 h-32 flex items-center justify-center text-3xl ${borderClass} ${cell === '👸' ? "bg-green-700" : ""} ${cell === '🤴' ? "bg-blue-700" : ""}`}
+      className={`w-32 h-32 flex items-center justify-center text-3xl opacity-90 ${borderClass} ${cell === '👸' ? "bg-green-700" : ""} ${cell === '🤴' ? "bg-blue-700" : ""}`}
       onClick={cellClick}
     >
       {cell}
