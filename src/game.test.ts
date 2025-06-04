@@ -1,5 +1,6 @@
 import { test, expect } from "vitest"
-import { initialGameState, playerWins, Game } from "./game"
+import { initialGameState, playerWins } from "./game"
+import type { Game } from "./game"
 
 test("playerWins: when no winning state -- should return false", () => {
     //situation
