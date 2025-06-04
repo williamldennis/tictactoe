@@ -11,15 +11,18 @@ export type EndState = Player | 'tie' | undefined
 export type CellIndex = [number, number]
 
 export type Game = {
+    id: string,
     board: Board,
     currentPlayer: Player,
     endState?: EndState | undefined
+
 }
 
 export const initialGameState = (): Game => {
     const game: Game = {
         board: [[null, null, null], [null, null, null], [null, null, null]],
-        currentPlayer: '👸'
+        currentPlayer: '👸',
+        id: crypto.randomUUID(),
     }
     return game
 }
