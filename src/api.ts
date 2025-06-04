@@ -50,7 +50,7 @@ export class TicTacToeApiClient implements TicTacToeApi {
     }
 
     async makeMove(gameId: string, row: number, col: number): Promise<Game> {
-        const response = await fetch(`/api./game/${gameId}/move`, {
+        const response = await fetch(`/api/game/${gameId}/move`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

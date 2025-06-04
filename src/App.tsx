@@ -1,6 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { initialGameState, move, type Cell, type Game, type Row } from './game'
+import { TicTacToeApiClient } from './api'
+import { useMemo } from "react";
+
 
 type CellProps = {
   cell: Cell,
@@ -16,7 +19,7 @@ function Cell({ cell, cellIndex, cellClick, rowIndex }: CellProps) {
     'border-4',
     !isLastRow && 'border-b',
     !isLastCol && 'border-r',
-    'border-black'
+    'border-white'
   ].filter(Boolean).join(' ')
 
   return (
@@ -48,17 +51,33 @@ function Row({ row, rowIndex, handleMove }: RowProps) {
 }
 
 function App() {
-  const [game, setGame] = useState(initialGameState())
+  const api = useMemo(() => new TicTacToeApiClient(), [])
+  const [game, setGame] = useState<Game | undefined>()
 
-  const handleMove = (rowIndex: number, colIndex: number) => {
-    const nextGame = move(game, rowIndex, colIndex)
+  async function initializeGame() {
+    const initialState = await api.createGame()
+    setGame(initialState)
+  }
+
+  useEffect(() => {
+    initializeGame()
+  }, [])
+
+  async function handleMove(rowIndex: number, colIndex: number) {
+    const nextGame = await api.makeMove(game!.id, rowIndex, colIndex)
     setGame(nextGame)
   }
 
-  const handleNewGame = () => {
-    console.log("new game button clicked");
+  if (!game) {
+    return (
+      <div>Loading...</div>
+    )
+  }
 
-    setGame(initialGameState())
+  async function handleNewGame() {
+    console.log("new game button clicked");
+    const newGame = await api.createGame()
+    setGame(newGame)
   }
 
   return (
