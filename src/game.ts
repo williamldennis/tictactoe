@@ -38,7 +38,7 @@ const winningStates: CellIndex[][] = [
     [[2, 0], [1, 1], [0, 2]], // diag 2 ll -> ur
 ]
 
-const playerWins = (game: Game, player: Player) => {
+export const playerWins = (game: Game, player: Player) => {
     return winningStates.some((winState) => winState.every(([rowIndex, colIndex]) => game.board[rowIndex][colIndex] === player))
 }
 

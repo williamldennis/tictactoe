@@ -7,14 +7,16 @@
     "dev": "npm run --watch server.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.8",
     "express": "^5.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "vite-express": "^0.21.1"
+    "vite-express": "^0.21.1",
+    "vitest": "^3.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
