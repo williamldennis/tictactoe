@@ -3,6 +3,8 @@ import { type Cell, type Game, type Row } from './game'
 import { TicTacToeApiClient } from './api'
 import { useMemo } from "react";
 import { useEffect, useState } from 'react'
+import { useLoaderData } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 
 type CellProps = {
     cell: Cell,
@@ -49,24 +51,21 @@ function Row({ row, rowIndex, handleMove }: RowProps) {
     )
 }
 
+const api = new TicTacToeApiClient()
 
 export default function GameView() {
+    const navigate = useNavigate()
 
-    const api = useMemo(() => new TicTacToeApiClient(), [])
-    const [game, setGame] = useState<Game | undefined>()
+    const { game: initialGame } = useLoaderData<{ game: Game }>()
 
-    async function initializeGame() {
-        const initialState = await api.createGame()
-        setGame(initialState)
-    }
-
-    useEffect(() => {
-        initializeGame()
-    }, [])
+    const [game, setGame] = useState<Game>(initialGame)
 
     async function handleMove(rowIndex: number, colIndex: number) {
         const nextGame = await api.makeMove(game!.id, rowIndex, colIndex)
         setGame(nextGame)
+
+        console.log("Making move for game", game!.id, "at", rowIndex, colIndex)
+
     }
 
     if (!game) {
@@ -79,6 +78,8 @@ export default function GameView() {
         console.log("new game button clicked");
         const newGame = await api.createGame()
         setGame(newGame)
+        navigate(`/game/${newGame.id}`) // 🔁 force URL update
+
     }
 
     const backgroundImageStyle = clsx(
