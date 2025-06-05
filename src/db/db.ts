@@ -36,4 +36,14 @@ export class DbTicTacToeApi implements TicTacToeApi {
             endState: game.endState as EndState
         }
     }
+
+    async getGames(): Promise<Game[]> {
+        const results = await db.select().from(gamesTable)
+        return results.map(game => ({
+            id: game.id,
+            currentPlayer: game.currentPlayer as Player,
+            board: game.board as Board,
+            endState: game.endState as EndState
+        }))
+    }
 }

@@ -2,13 +2,8 @@
 import './App.css'
 import { Outlet } from 'react-router-dom';
 
-import GameView from './GameView';
-
-
-
-
 function App() {
-
+  console.log("App mounted")
 
   return (
     <>

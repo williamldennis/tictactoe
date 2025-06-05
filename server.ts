@@ -1,7 +1,7 @@
 //e.g server.js
 import express from "express";
 import ViteExpress from "vite-express";
-import { InMemoryTicTacToeApi } from "./src/api"
+// import { InMemoryTicTacToeApi } from "./src/api"
 import { DbTicTacToeApi } from "./src/db/db"
 
 const app = express();
@@ -9,8 +9,6 @@ const app = express();
 app.use(express.json())
 
 const api = new DbTicTacToeApi()
-
-app.get("/message", (_, res) => res.send("Hello express guys!"));
 
 app.get("/api/game/:gameId", async (req, res) => {
     const game = await api.getGame(req.params.gameId) // the request parameters are the URL gameID
@@ -25,6 +23,11 @@ app.post("/api/game", async (req, res) => {
 app.post("/api/game/:gameId/move", async (req, res) => {
     const game = await api.makeMove(req.params.gameId, req.body.row, req.body.col)
     res.json(game)
+})
+
+app.get("/api/games", async (req, res) => {
+    const games = await api.getGames()
+    res.json(games)
 })
 
 ViteExpress.listen(app, 3000, () => console.log("Server is listening..."));
