@@ -19,7 +19,10 @@ export class DbTicTacToeApi implements TicTacToeApi {
         const game = await this.getGame(gameId)
         const newGame = makeMoveState(game, row, col)
         const values: typeof gamesTable.$inferInsert = newGame
+        console.log(values)
         await db.update(gamesTable).set(values).where(eq(gamesTable.id, gameId))
+        console.log("✅ [makeMove] Successfully updated DB")
+
         return newGame
     }
 

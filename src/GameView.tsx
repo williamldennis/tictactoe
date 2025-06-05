@@ -3,6 +3,7 @@ import { type Cell, type Game, type Row } from './game'
 import { TicTacToeApiClient } from './api'
 import { useMemo } from "react";
 import { useEffect, useState } from 'react'
+import { useLoaderData } from 'react-router-dom';
 
 type CellProps = {
     cell: Cell,
@@ -49,11 +50,13 @@ function Row({ row, rowIndex, handleMove }: RowProps) {
     )
 }
 
+const api = new TicTacToeApiClient()
 
 export default function GameView() {
 
-    const api = useMemo(() => new TicTacToeApiClient(), [])
-    const [game, setGame] = useState<Game | undefined>()
+    const { game: initialGame } = useLoaderData<{ game: Game }>()
+
+    const [game, setGame] = useState<Game>(initialGame)
 
     async function initializeGame() {
         const initialState = await api.createGame()
@@ -67,6 +70,8 @@ export default function GameView() {
     async function handleMove(rowIndex: number, colIndex: number) {
         const nextGame = await api.makeMove(game!.id, rowIndex, colIndex)
         setGame(nextGame)
+        console.log("Making move for game", game!.id, "at", rowIndex, colIndex)
+
     }
 
     if (!game) {

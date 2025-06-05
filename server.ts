@@ -21,8 +21,12 @@ app.post("/api/game", async (req, res) => {
 })
 
 app.post("/api/game/:gameId/move", async (req, res) => {
+    console.log("Move API hit with", req.params.gameId, req.body)
+
     const game = await api.makeMove(req.params.gameId, req.body.row, req.body.col)
+
     res.json(game)
+
 })
 
 app.get("/api/games", async (req, res) => {
