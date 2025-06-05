@@ -58,15 +58,6 @@ export default function GameView() {
 
     const [game, setGame] = useState<Game>(initialGame)
 
-    async function initializeGame() {
-        const initialState = await api.createGame()
-        setGame(initialState)
-    }
-
-    useEffect(() => {
-        initializeGame()
-    }, [])
-
     async function handleMove(rowIndex: number, colIndex: number) {
         const nextGame = await api.makeMove(game!.id, rowIndex, colIndex)
         setGame(nextGame)
