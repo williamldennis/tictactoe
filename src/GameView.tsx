@@ -1,10 +1,12 @@
 import clsx from 'clsx'
 import { type Cell, type Game, type Row } from './game'
 import { TicTacToeApiClient } from './api'
-import { useMemo } from "react";
+import { GAME_UPDATED, USER_JOINED } from "../constants";
 import { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
+import { io } from "socket.io-client";
+
 
 type CellProps = {
     cell: Cell,
@@ -67,6 +69,36 @@ export default function GameView() {
         console.log("Making move for game", game!.id, "at", rowIndex, colIndex)
 
     }
+
+
+    useEffect(() => {
+        const socket = io("http://localhost:3000")
+        socket.on("connect", () => {
+            console.log("connected to socket")
+            //join game room
+
+            socket.emit("join-game", game.id)
+
+            socket.on(USER_JOINED, (userId: string) => {
+                console.log(`user ${userId} joined`)
+            })
+            socket.on(GAME_UPDATED, (game: Game) => {
+                console.log("game updated", game)
+                setGame(game)
+            })
+        })
+
+        return () => {
+            socket.disconnect()
+        }
+    }, [game.id])
+
+
+
+
+
+
+
 
     if (!game) {
         return (

@@ -32,9 +32,11 @@ export interface TicTacToeApi {
 //     }
 // }
 
+const BASE_URL = "http://localhost:3000"
+
 export class TicTacToeApiClient implements TicTacToeApi {
     async createGame(): Promise<Game> {
-        const response = await fetch("/api/game", {
+        const response = await fetch(`${BASE_URL}/api/game`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -45,19 +47,19 @@ export class TicTacToeApiClient implements TicTacToeApi {
     }
 
     async getGame(gameId: string): Promise<Game> {
-        const response = await fetch(`/api/game/${gameId}`)
+        const response = await fetch(`${BASE_URL}/api/game/${gameId}`)
         const game = await response.json()
         return game
     }
 
     async getGames(): Promise<Game[]> {
-        const response = await fetch("/api/games")
+        const response = await fetch(`${BASE_URL}/api/games`)
         const games = await response.json()
         return games
     }
 
     async makeMove(gameId: string, row: number, col: number): Promise<Game> {
-        const response = await fetch(`/api/game/${gameId}/move`, {
+        const response = await fetch(`${BASE_URL}/api/game/${gameId}/move`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
