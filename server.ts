@@ -8,7 +8,7 @@ import { Server } from "socket.io";
 import { GAME_UPDATED, USER_JOINED, GAME_REMATCH } from "./constants";
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3000"
-const vercelUrl = process.env.VERCEL_URL || "http://localhost:3000"
+const vercelUrl = process.env.VERCEL_URL || "http://localhost:5173"
 
 const app = express();
 app.use(express.json())
@@ -34,7 +34,7 @@ app.get("/api/games", async (req, res) => {
     res.json(games)
 })
 
-const PORT = parseInt("3000")
+const PORT = parseInt(process.env.PORT || "3000");
 
 const server = app.listen(PORT,
     () => console.log(`Server is listening at http://localhost:${PORT}`)
@@ -57,7 +57,7 @@ app.post("/api/game/:gameId/move", async (req, res) => {
 })
 
 app.post("/api/game/rematch", async (req, res) => {
-    console.log("Rematch API hit with", req.params.gameId, req.body)
+    console.log("Rematch API hit with", req.body)
     const game = await api.createRematch()
     res.json(game)
 })
