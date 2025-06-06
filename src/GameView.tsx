@@ -103,6 +103,14 @@ export default function GameView() {
         setGame(newGame)
         navigate(`/game/${newGame.id}`) // 🔁 force URL update
     }
+
+    async function handleNewGame() {
+        console.log("rematch button clicked");
+        const newGame = await api.createGame()
+        setGame(newGame)
+        navigate(`/game/${newGame.id}`) // 🔁 force URL update
+    }
+
     async function handleMove(rowIndex: number, colIndex: number) {
         const nextGame = await api.makeMove(game!.id, rowIndex, colIndex)
         setGame(nextGame)
@@ -113,7 +121,7 @@ export default function GameView() {
 
 
     const backgroundImageStyle = clsx(
-        "mt-4 w-160 h-160 rounded-4xl  bg-cover bg-center",
+        "mt-4 w-160 h-160 rounded-4xl  bg-cover bg-center flex flex-col items-center",
         !game.endState && "bg-[url('assets/tic-tac-toe.png')]",
         game.endState === '👸' && "bg-[url('assets/jill-wins.gif')]",
         game.endState === '🤴' && "bg-[url('assets/jack-wins.gif')]",
@@ -122,9 +130,13 @@ export default function GameView() {
     )
 
     const bannerStyle = clsx(
-        "text-5xl p-5 m-6 rounded-3xl",
-        game.currentPlayer === '👸' && "bg-red-200",
-        game.currentPlayer === '🤴' && "bg-blue-200"
+        "p-5 m-6 rounded-3xl",
+        {
+            "text-5xl bg-red-200": game.currentPlayer === '👸' || game.endState === '👸',
+            "text-5xl bg-blue-200": game.currentPlayer === '🤴' || game.endState === '🤴',
+            "text-xl bg-white": game.endState === 'tie'
+        }
+
     )
 
     if (!game) {
@@ -134,7 +146,7 @@ export default function GameView() {
     }
     return (
         <>
-            <div className="flex items-center justify-center">
+            <div className="flex justify-center">
                 {isModalOpen && (
                     <div className='top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute z-1 drop-shadow-md'>
                         <div className='w-160 h-160 rounded-4xl bg-red-300 flex flex-col items-center justify-center'>
@@ -153,7 +165,7 @@ export default function GameView() {
                             Turn: {game.currentPlayer === '👸' ? '👸 Jill' : '🤴 Jack'}
                         </p>}
                     {game.endState &&
-                        <div className='text-4xl p-5 m-6 bg-white rounded-3xl'>
+                        <div className={bannerStyle}>
                             {game.endState === 'tie'
                                 ? 'A tie!? You spilled the coffee.'
                                 : game.endState === '👸'
@@ -172,10 +184,16 @@ export default function GameView() {
                             {game.endState &&
                                 <>
                                     <button
-                                        className='bg-black rounded text-white px-12 py-3 m-6'
+                                        className='bg-black rounded text-white px-10 py-3 m-6'
                                         onClick={handleRematch}
                                     >
                                         REMATCH
+                                    </button>
+                                    <button
+                                        className='bg-black rounded text-white px-10 py-3 m-6'
+                                        onClick={handleNewGame}
+                                    >
+                                        NEW GAME
                                     </button>
                                 </>
                             }
