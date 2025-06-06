@@ -14,6 +14,13 @@ export class DbTicTacToeApi implements TicTacToeApi {
         return game
     }
 
+    async createRematch(): Promise<Game> {
+        const game = initialGameState()
+        const values: typeof gamesTable.$inferInsert = game
+        await db.insert(gamesTable).values(values)
+        return game
+    }
+
 
     async makeMove(gameId: string, row: number, col: number): Promise<Game> {
         const game = await this.getGame(gameId)
