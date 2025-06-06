@@ -6,7 +6,8 @@ export default function GameLobby() {
 
     const { games: lobbyList } = useLoaderData<{ games: Game[] }>()
 
-    const [games, setGames] = useState<Game[]>(lobbyList)
+    const [games, setGames] = useState<Game[]>()
+    setGames(lobbyList)
 
     console.log("lobby")
 
@@ -16,7 +17,7 @@ export default function GameLobby() {
                 <h1 className="text-blue-900 font-bold text-2xl pt-8 pb-5">Available Games</h1>
                 <h1 className="text-blue-900 text-sm">Click a GameID to play</h1>
                 <div className="flex flex-col items-center">
-                    {games.map(game => (
+                    {games!.map(game => (
                         <Link to={`/game/${game.id}`}>
                             <div
                                 className=" hover:bg-sky-900 border font-medium border-blue-800 w-100 p-4 m-3 rounded bg-blue-800 flex flex-col items-start"

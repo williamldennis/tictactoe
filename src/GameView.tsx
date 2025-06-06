@@ -54,6 +54,7 @@ function Row({ row, rowIndex, handleMove }: RowProps) {
 }
 
 const api = new TicTacToeApiClient()
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3000"
 
 export default function GameView() {
     const navigate = useNavigate()
@@ -66,7 +67,7 @@ export default function GameView() {
     const socketRef = useRef<Socket | null>(null)
 
     useEffect(() => {
-        const socket = io("http://localhost:3000")
+        const socket = io(apiUrl)
         socketRef.current = socket
 
         socket.on("connect", () => {

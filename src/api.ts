@@ -1,4 +1,4 @@
-import { type Game, initialGameState as createGameState, move as makeGameMove } from "./game"
+import { type Game } from "./game"
 
 export interface TicTacToeApi {
     createGame(): Promise<Game>
@@ -33,7 +33,9 @@ export interface TicTacToeApi {
 //     }
 // }
 
-const BASE_URL = "http://localhost:3000"
+
+const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000"
+
 
 export class TicTacToeApiClient implements TicTacToeApi {
     async createGame(): Promise<Game> {

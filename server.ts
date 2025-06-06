@@ -7,6 +7,8 @@ import { Game } from "./src/game";
 import { Server } from "socket.io";
 import { GAME_UPDATED, USER_JOINED, GAME_REMATCH } from "./constants";
 
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3000"
+
 const app = express();
 app.use(express.json())
 app.use(cors({
@@ -31,7 +33,7 @@ app.get("/api/games", async (req, res) => {
     res.json(games)
 })
 
-const PORT = parseInt(process.env.PORT || "3000")
+const PORT = parseInt("3000")
 
 const server = app.listen(PORT,
     () => console.log(`Server is listening at http://localhost:${PORT}`)
