@@ -134,20 +134,18 @@ export default function GameView() {
     }
     return (
         <>
-            <div>
+            <div className="flex items-center justify-center">
                 {isModalOpen && (
-                    <div>
-                        <h1>It's a Rematch!</h1>
-                        <button
-                            onClick={() => setIsModalOpen(false)}
-                        >LET'S GO</button>
+                    <div className='top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute z-1 drop-shadow-md'>
+                        <div className='w-160 h-160 rounded-4xl bg-red-300 flex flex-col items-center justify-center'>
+                            <h1 className='text-6xl'>It's a Rematch!</h1>
+                            <button
+                                onClick={() => setIsModalOpen(false)}
+                                className="bg-blue-300 px-7 py-3 text-xl mt-10 rounded font-bold"
+                            >LET'S GO</button>
+                        </div>
                     </div>
                 )}
-            </div>
-
-
-            <div className="flex items-center justify-center">
-
                 <div className={backgroundImageStyle}>
 
                     {!game.endState &&
@@ -180,7 +178,6 @@ export default function GameView() {
                                         REMATCH
                                     </button>
                                 </>
-
                             }
                         </div>
                     </div>
