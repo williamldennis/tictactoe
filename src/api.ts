@@ -5,6 +5,7 @@ export interface TicTacToeApi {
     makeMove(gameId: string, row: number, col: number): Promise<Game>
     getGame(gameId: string): Promise<Game>
     getGames(gameId: string): Promise<Game[]>
+    createRematch(): Promise<Game>
 }
 
 // export class InMemoryTicTacToeApi implements TicTacToeApi {
@@ -65,6 +66,17 @@ export class TicTacToeApiClient implements TicTacToeApi {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ row, col })
+        })
+        const game = await response.json()
+        return game
+    }
+
+    async createRematch(): Promise<Game> {
+        const response = await fetch(`${BASE_URL}/api/game/rematch`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
         })
         const game = await response.json()
         return game

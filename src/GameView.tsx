@@ -1,11 +1,11 @@
 import clsx from 'clsx'
 import { type Cell, type Game, type Row } from './game'
 import { TicTacToeApiClient } from './api'
-import { GAME_UPDATED, USER_JOINED } from "../constants";
-import { useEffect, useState } from 'react'
+import { GAME_UPDATED, USER_JOINED, GAME_REMATCH } from "../constants";
+import { useEffect, useState, useRef } from 'react'
 import { useLoaderData } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
-import { io } from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
 
 
 type CellProps = {
@@ -62,17 +62,13 @@ export default function GameView() {
 
     const [game, setGame] = useState<Game>(initialGame)
 
-    async function handleMove(rowIndex: number, colIndex: number) {
-        const nextGame = await api.makeMove(game!.id, rowIndex, colIndex)
-        setGame(nextGame)
 
-        console.log("Making move for game", game!.id, "at", rowIndex, colIndex)
-
-    }
-
+    const socketRef = useRef<Socket | null>(null)
 
     useEffect(() => {
         const socket = io("http://localhost:3000")
+        socketRef.current = socket
+
         socket.on("connect", () => {
             console.log("connected to socket")
             //join game room
@@ -86,6 +82,12 @@ export default function GameView() {
                 console.log("game updated", game)
                 setGame(game)
             })
+            socket.on(GAME_REMATCH, (newGame: Game) => {
+                console.log("Rematch received", newGame)
+                setGame(newGame)
+                navigate(`/game/${newGame.id}`)
+            })
+
         })
 
         return () => {
@@ -93,26 +95,21 @@ export default function GameView() {
         }
     }, [game.id])
 
-
-
-
-
-
-
-
-    if (!game) {
-        return (
-            <div>Loading...</div>
-        )
-    }
-
-    async function handleNewGame() {
-        console.log("new game button clicked");
-        const newGame = await api.createGame()
+    async function handleRematch() {
+        console.log("rematch button clicked");
+        const newGame = await api.createRematch()
+        socketRef.current?.emit(GAME_REMATCH, { oldGameId: game.id, newGame })
         setGame(newGame)
         navigate(`/game/${newGame.id}`) // 🔁 force URL update
+    }
+    async function handleMove(rowIndex: number, colIndex: number) {
+        const nextGame = await api.makeMove(game!.id, rowIndex, colIndex)
+        setGame(nextGame)
+
+        console.log("Making move for game", game!.id, "at", rowIndex, colIndex)
 
     }
+
 
     const backgroundImageStyle = clsx(
         "mt-4 w-160 h-160 rounded-4xl  bg-cover bg-center",
@@ -129,6 +126,11 @@ export default function GameView() {
         game.currentPlayer === '🤴' && "bg-blue-200"
     )
 
+    if (!game) {
+        return (
+            <div>Loading...</div>
+        )
+    }
     return (
         <div className="flex items-center justify-center">
 
@@ -159,9 +161,9 @@ export default function GameView() {
                             <>
                                 <button
                                     className='bg-black rounded text-white px-12 py-3 m-6'
-                                    onClick={() => handleNewGame()}
+                                    onClick={handleRematch}
                                 >
-                                    NEW GAME
+                                    REMATCH
                                 </button>
                             </>
 

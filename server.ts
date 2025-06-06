@@ -5,7 +5,7 @@ import cors from "cors"
 import { DbTicTacToeApi } from "./src/db/db"
 import { Game } from "./src/game";
 import { Server } from "socket.io";
-import { GAME_UPDATED, USER_JOINED } from "./constants";
+import { GAME_UPDATED, USER_JOINED, GAME_REMATCH } from "./constants";
 
 const app = express();
 app.use(express.json())
@@ -53,6 +53,12 @@ app.post("/api/game/:gameId/move", async (req, res) => {
     res.json(game)
 })
 
+app.post("/api/game/rematch", async (req, res) => {
+    console.log("Rematch API hit with", req.params.gameId, req.body)
+    const game = await api.createRematch()
+    res.json(game)
+})
+
 io.on("connection", (socket) => {
     console.log(`a user connected: ${socket.id}`);
 
@@ -66,6 +72,11 @@ io.on("connection", (socket) => {
         socket.join(roomId)
         console.log(`Socket ${socket.id} joined room ${roomId}`)
         io.to(roomId).emit(USER_JOINED, socket.id)
+    })
+
+    socket.on("game-rematch", ({ oldGameId, newGame }) => {
+        const oldRoomId = `game-${oldGameId}`
+        io.to(oldRoomId).emit("game-rematch", newGame)
     })
 
 })
