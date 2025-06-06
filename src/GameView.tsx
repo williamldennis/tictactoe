@@ -54,7 +54,7 @@ function Row({ row, rowIndex, handleMove }: RowProps) {
 }
 
 const api = new TicTacToeApiClient()
-const apiUrl = import.meta.env.REACT_APP_API_URL || "http://localhost:3000"
+const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
 export default function GameView() {
     const navigate = useNavigate()
