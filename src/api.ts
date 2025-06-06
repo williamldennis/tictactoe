@@ -34,7 +34,11 @@ export interface TicTacToeApi {
 // }
 
 
-const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000"
+const isDev = process.env.NODE_ENV !== "production";
+const BASE_URL = isDev
+    ? "http://localhost:3000"
+    : "https://wd-tictactoe.onrender.com";
+
 
 
 export class TicTacToeApiClient implements TicTacToeApi {
