@@ -61,7 +61,7 @@ export default function GameView() {
     const { game: initialGame } = useLoaderData<{ game: Game }>()
 
     const [game, setGame] = useState<Game>(initialGame)
-
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const socketRef = useRef<Socket | null>(null)
 
@@ -85,6 +85,7 @@ export default function GameView() {
             socket.on(GAME_REMATCH, (newGame: Game) => {
                 console.log("Rematch received", newGame)
                 setGame(newGame)
+                setIsModalOpen(true)
                 navigate(`/game/${newGame.id}`)
             })
 
@@ -132,47 +133,62 @@ export default function GameView() {
         )
     }
     return (
-        <div className="flex items-center justify-center">
-
-            <div className={backgroundImageStyle}>
-
-                {!game.endState &&
-                    <p className={bannerStyle}>
-                        Turn: {game.currentPlayer === '👸' ? '👸 Jill' : '🤴 Jack'}
-                    </p>}
-                {game.endState &&
-                    <div className='text-4xl p-5 m-6 bg-white rounded-3xl'>
-                        {game.endState === 'tie'
-                            ? 'A tie!? You spilled the coffee.'
-                            : game.endState === '👸'
-                                ? '👸 Jill wins a ☕️'
-                                : '🤴 Jack wins a ☕️'}
-                    </div>
-                }
-                <div className=''>
-                    {game.board.map((row, rowIndex) =>
-                        <Row
-                            row={row}
-                            rowIndex={rowIndex}
-                            handleMove={handleMove}
-                        />)}
+        <>
+            <div>
+                {isModalOpen && (
                     <div>
-                        {game.endState &&
-                            <>
-                                <button
-                                    className='bg-black rounded text-white px-12 py-3 m-6'
-                                    onClick={handleRematch}
-                                >
-                                    REMATCH
-                                </button>
-                            </>
-
-                        }
+                        <h1>It's a Rematch!</h1>
+                        <button
+                            onClick={() => setIsModalOpen(false)}
+                        >LET'S GO</button>
                     </div>
-                </div>
-
+                )}
             </div>
-        </div>
+
+
+            <div className="flex items-center justify-center">
+
+                <div className={backgroundImageStyle}>
+
+                    {!game.endState &&
+                        <p className={bannerStyle}>
+                            Turn: {game.currentPlayer === '👸' ? '👸 Jill' : '🤴 Jack'}
+                        </p>}
+                    {game.endState &&
+                        <div className='text-4xl p-5 m-6 bg-white rounded-3xl'>
+                            {game.endState === 'tie'
+                                ? 'A tie!? You spilled the coffee.'
+                                : game.endState === '👸'
+                                    ? '👸 Jill wins a ☕️'
+                                    : '🤴 Jack wins a ☕️'}
+                        </div>
+                    }
+                    <div className=''>
+                        {game.board.map((row, rowIndex) =>
+                            <Row
+                                row={row}
+                                rowIndex={rowIndex}
+                                handleMove={handleMove}
+                            />)}
+                        <div>
+                            {game.endState &&
+                                <>
+                                    <button
+                                        className='bg-black rounded text-white px-12 py-3 m-6'
+                                        onClick={handleRematch}
+                                    >
+                                        REMATCH
+                                    </button>
+                                </>
+
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </>
+
     )
 
 
