@@ -8,11 +8,12 @@ import { Server } from "socket.io";
 import { GAME_UPDATED, USER_JOINED, GAME_REMATCH } from "./constants";
 
 const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3000"
+const vercelUrl = process.env.VERCEL_URL || "http://localhost:3000"
 
 const app = express();
 app.use(express.json())
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: vercelUrl,
     methods: ["GET", "POST"]
 }))
 
@@ -41,7 +42,7 @@ const server = app.listen(PORT,
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: vercelUrl,
         methods: ["GET", "POST"]
     }
 })
