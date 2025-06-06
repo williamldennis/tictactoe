@@ -13,7 +13,7 @@ const vercelUrl = process.env.VERCEL_URL || "http://localhost:5173"
 const app = express();
 app.use(express.json())
 app.use(cors({
-    origin: vercelUrl,
+    origin: "*",
     methods: ["GET", "POST"]
 }))
 
