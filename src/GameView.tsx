@@ -120,7 +120,7 @@ export default function GameView() {
 
     }
 
-    async function handleBackToLobby(rowIndex: number, colIndex: number) {
+    async function handleBackToLobby() {
         navigate(`/`)
 
 

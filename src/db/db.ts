@@ -4,6 +4,8 @@ import { initialGameState, type Game, move as makeMoveState, type Player, type B
 import { gamesTable } from './schema';
 import { eq } from 'drizzle-orm';
 const db = drizzle(process.env.DATABASE_URL!)
+import { isNull } from "drizzle-orm";
+
 
 export class DbTicTacToeApi implements TicTacToeApi {
 
@@ -48,7 +50,10 @@ export class DbTicTacToeApi implements TicTacToeApi {
     }
 
     async getGames(): Promise<Game[]> {
-        const results = await db.select().from(gamesTable)
+        const results = await db
+            .select()
+            .from(gamesTable)
+            .where(isNull(gamesTable.endState))
         return results.map(game => ({
             id: game.id,
             currentPlayer: game.currentPlayer as Player,
