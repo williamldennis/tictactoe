@@ -102,14 +102,14 @@ export default function GameView() {
         const newGame = await api.createRematch()
         socketRef.current?.emit(GAME_REMATCH, { oldGameId: game.id, newGame })
         setGame(newGame)
-        navigate(`/game/${newGame.id}`) // 🔁 force URL update
+        navigate(`/game/${newGame.id}`)
     }
 
     async function handleNewGame() {
         console.log("rematch button clicked");
         const newGame = await api.createGame()
         setGame(newGame)
-        navigate(`/game/${newGame.id}`) // 🔁 force URL update
+        navigate(`/game/${newGame.id}`)
     }
 
     async function handleMove(rowIndex: number, colIndex: number) {
@@ -117,6 +117,12 @@ export default function GameView() {
         setGame(nextGame)
 
         console.log("Making move for game", game!.id, "at", rowIndex, colIndex)
+
+    }
+
+    async function handleBackToLobby(rowIndex: number, colIndex: number) {
+        navigate(`/`)
+
 
     }
 
@@ -147,7 +153,7 @@ export default function GameView() {
     }
     return (
         <>
-            <div className="flex justify-center">
+            <div className="flex justify-center flex-col items-center">
                 {isModalOpen && (
                     <div className='top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 absolute z-1 drop-shadow-md'>
                         <div className='w-160 h-160 rounded-4xl bg-red-300 flex flex-col items-center justify-center'>
@@ -202,6 +208,15 @@ export default function GameView() {
                     </div>
 
                 </div>
+                <div>
+                    <button
+                        className='bg-black rounded text-white px-10 py-3 m-6'
+                        onClick={handleBackToLobby}
+                    >
+                        BACK TO LOBBY
+                    </button>
+                </div>
+
             </div>
         </>
 
