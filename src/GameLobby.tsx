@@ -2,7 +2,6 @@ import { Link, useLoaderData } from "react-router-dom"
 import { type Game } from "./game"
 import { TicTacToeApiClient } from "./api";
 import { useNavigate } from 'react-router-dom'
-import { Button } from "./components/ui/button";
 import { CoolMode } from "./components/magicui/cool-mode";
 import { ShimmerButton } from "./components/magicui/shimmer-button";
 
