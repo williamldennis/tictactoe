@@ -2,6 +2,9 @@ import { Link, useLoaderData } from "react-router-dom"
 import { type Game } from "./game"
 import { TicTacToeApiClient } from "./api";
 import { useNavigate } from 'react-router-dom'
+import { Button } from "./components/ui/button";
+import { CoolMode } from "./components/magicui/cool-mode";
+import { ShimmerButton } from "./components/magicui/shimmer-button";
 
 export default function GameLobby() {
 
@@ -21,12 +24,24 @@ export default function GameLobby() {
         <>
             <div className="rounded-4xl bg-blue-200">
                 <h1 className="text-blue-900 font-bold text-2xl pt-8 pb-5">Start A Game</h1>
-                <button
-                    className='bg-black rounded text-white px-10 py-3 m-6'
-                    onClick={handleNewGame}
-                >
-                    NEW GAME
-                </button>
+                <div className="flex flex-col items-center">
+
+
+                    <CoolMode
+                        options={{
+                            particle:
+                                "/jill.png",
+                        }}
+                    >
+                        <ShimmerButton
+                            className="px-20"
+                            onClick={handleNewGame}
+                            shimmerSize=".2em"
+                        >
+                            NEW GAME
+                        </ShimmerButton>
+                    </CoolMode>
+                </div>
                 <h1 className="text-blue-900 font-bold text-2xl pt-8 pb-5">Available Games</h1>
                 <h3 className="text-blue-900 text-sm">Click a GameID to play</h3>
                 <div className="flex flex-col items-center">
